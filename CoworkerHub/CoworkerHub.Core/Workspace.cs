@@ -10,5 +10,6 @@ namespace CoworkerHub.Core
         public string Name { get; set; }
         [MaxLength(250)]
         public string Description { get; set; }
+        public ICollection<Desk> Desks { get; set; } = new List<Desk>();
     }
 }

@@ -13,5 +13,15 @@ namespace CoworkerHub.Data
         
         public DbSet<Workspace> Workspaces { get; set; }
         public DbSet<Desk> Desks { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Workspace>()
+                .HasMany(w => w.Desks)
+                .WithOne(d => d.Workspace)
+                .HasForeignKey(d => d.WorkspaceId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
     }
 }
