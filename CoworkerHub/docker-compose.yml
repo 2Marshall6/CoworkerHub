@@ -1,0 +1,21 @@
+services:
+  coworkerhub.api:
+    image: ${DOCKER_REGISTRY-}coworkerhubapi
+    build:
+      context: .
+      dockerfile: CoworkerHub.API/Dockerfile
+    ports:
+       - "5000:5000"
+       - "5001:5001"
+
+  products.database:
+    image: postgres:16
+    container_name: products.database
+    environment:
+      - POSTGRES_DB=products
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - ./.containers/product-db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
