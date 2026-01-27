@@ -10,9 +10,9 @@ namespace CoworkerHub.Core
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string IsAvailable { get; set; }
+        public bool IsAvailable { get; set; }
 
-        public bool WorkspaceId { get; set; }
+        public Guid WorkspaceId { get; set; }
         public Workspace Workspace { get; set; }
     }
 }
