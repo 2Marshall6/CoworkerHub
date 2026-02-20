@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CoworkerHub.Core
+namespace CoworkerHub.Core.Entities
 {
     public class Workspace
     {
         [Key]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         [Required]
         public string Name { get; set; }
         [MaxLength(250)]

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using CoworkerHub.Core;
+using CoworkerHub.Core.Entities;
 
 namespace CoworkerHub.Data
 {
