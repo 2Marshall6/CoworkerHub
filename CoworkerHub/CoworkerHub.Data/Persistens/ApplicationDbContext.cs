@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using CoworkerHub.Core.Entities;
+﻿using CoworkerHub.Domain.Entities;
+using CoworkerHub.Infrastructure.Configurations;
+using Microsoft.EntityFrameworkCore;
 
-namespace CoworkerHub.Data
+namespace CoworkerHub.Infrastructure.Persistens
 {
     public class ApplicationDbContext : DbContext
     {
@@ -16,6 +17,7 @@ namespace CoworkerHub.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(WorkspaceConfiguration).Assembly);
 
             modelBuilder.Entity<Workspace>()
                 .HasMany(w => w.Desks)

@@ -1,8 +1,9 @@
-﻿using CoworkerHub.Core.Entities;
-using CoworkerHub.Core.Interfaces;
+﻿using CoworkerHub.Application.Interfaces;
+using CoworkerHub.Domain.Entities;
+using CoworkerHub.Infrastructure.Persistens;
 using Microsoft.EntityFrameworkCore;
 
-namespace CoworkerHub.Data.Repositories
+namespace CoworkerHub.Infrastructure.Repositories
 {
     public class WorkspaceRepository : IWorkspaceRepository
     {
@@ -12,21 +13,17 @@ namespace CoworkerHub.Data.Repositories
             _context = context;
         }
 
-        public async Task CreateWorkspaceAsync(Workspace createModel)
+        public async Task CreateWorkspaceAsync(Workspace createModel, CancellationToken cancellationToken)
         {
             await _context.Workspaces
                 .AddAsync(createModel);
-            await _context
-                .SaveChangesAsync();
         }
 
-        public async Task DeleteWorkspaceAsync(int workspaceId)
+        public async Task DeleteWorkspaceAsync(int workspaceId, CancellationToken cancellationToken)
         {
             await _context.Workspaces
                 .Where(w => w.Id == workspaceId)
                 .ExecuteDeleteAsync();
-            await _context
-                .SaveChangesAsync();
         }
 
         public async Task<List<Workspace>> GetAllWorkspacesAsync()

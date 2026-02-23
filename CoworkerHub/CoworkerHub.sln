@@ -5,9 +5,9 @@ VisualStudioVersion = 17.14.36414.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoworkerHub.API", "CoworkerHub.API\CoworkerHub.API.csproj", "{39CD8DDB-49A1-4C6F-B13E-2E7313EE875E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoworkerHub.Data", "CoworkerHub.Data\CoworkerHub.Data.csproj", "{08EE8226-5FC3-4647-9E84-0B4F52318515}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoworkerHub.Infrastructure", "CoworkerHub.Data\CoworkerHub.Infrastructure.csproj", "{08EE8226-5FC3-4647-9E84-0B4F52318515}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoworkerHub.Core", "CoworkerHub.Core\CoworkerHub.Core.csproj", "{22D22BCE-28D7-471E-9C7D-069669A5823C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoworkerHub.Domain", "CoworkerHub.Core\CoworkerHub.Domain.csproj", "{22D22BCE-28D7-471E-9C7D-069669A5823C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoworkerHub.Application", "CoworkerHub.Application\CoworkerHub.Application.csproj", "{3D860444-7300-4251-914D-1FF13CB7311A}"
 EndProject
