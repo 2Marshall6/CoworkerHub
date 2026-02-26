@@ -48,9 +48,9 @@ namespace CoworkerHub.API.Controllers
                 return BadRequest(validationResult.Errors);
             }
 
-            await _workspaceService.CreateWorkspaceAsync(createModel, cancellationToken);
+            var workspace = await _workspaceService.CreateWorkspaceAsync(createModel, cancellationToken);
 
-            return Ok();
+            return CreatedAtAction(nameof(GetById), new { id = workspace.Id });
         }
 
         [HttpDelete("{id}")]

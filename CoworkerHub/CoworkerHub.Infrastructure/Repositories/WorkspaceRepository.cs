@@ -15,20 +15,21 @@ namespace CoworkerHub.Infrastructure.Repositories
 
         public async Task CreateWorkspaceAsync(Workspace createModel, CancellationToken cancellationToken)
         {
-            await _context.Workspaces
-                .AddAsync(createModel);
+            var workspsce = await _context.Workspaces
+                .AddAsync(createModel, cancellationToken);
         }
 
         public async Task DeleteWorkspaceAsync(int workspaceId, CancellationToken cancellationToken)
         {
             await _context.Workspaces
                 .Where(w => w.Id == workspaceId)
-                .ExecuteDeleteAsync();
+                .ExecuteDeleteAsync(cancellationToken);
         }
 
         public async Task<List<Workspace>> GetAllWorkspacesAsync()
         {
             var workspaces = await _context.Workspaces
+                                    .AsNoTracking()
                                     .ToListAsync();
             return workspaces;
         }
@@ -36,6 +37,7 @@ namespace CoworkerHub.Infrastructure.Repositories
         public async Task<Workspace> GetWorkspaceByIdAsync(int id)
         {
             var warkspace = await _context.Workspaces
+                                    .AsNoTracking()
                                     .Where(w => w.Id == id)
                                     .FirstOrDefaultAsync();
             return warkspace;

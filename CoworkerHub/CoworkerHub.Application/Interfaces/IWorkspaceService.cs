@@ -1,12 +1,13 @@
 ﻿using CoworkerHub.Application.DTOs;
+using CoworkerHub.Domain.Entities;
 
 namespace CoworkerHub.Application.Interfaces
 {
     public interface IWorkspaceService
     {
-        public Task<List<WorkspaceDTO>> GetAllWorkspacesAsync();
-        public Task<WorkspaceDTO> GetWorkspaceByIdAsync(int id);
-        public Task CreateWorkspaceAsync(CreateWorkspaceDTO workspace, CancellationToken cancellationToken);
-        public Task DeleteWorkspaceAsync(int Id, CancellationToken cancellationToken);
+        Task<List<WorkspaceDTO>> GetAllWorkspacesAsync();
+        Task<WorkspaceDTO> GetWorkspaceByIdAsync(int id);
+        Task<Workspace> CreateWorkspaceAsync(CreateWorkspaceDTO workspace, CancellationToken cancellationToken);
+        Task DeleteWorkspaceAsync(int Id, CancellationToken cancellationToken);
     }
 }

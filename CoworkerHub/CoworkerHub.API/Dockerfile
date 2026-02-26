@@ -14,8 +14,8 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["CoworkerHub.API/CoworkerHub.API.csproj", "CoworkerHub.API/"]
 COPY ["CoworkerHub.Application/CoworkerHub.Application.csproj", "CoworkerHub.Application/"]
-COPY ["CoworkerHub.Core/CoworkerHub.Core.csproj", "CoworkerHub.Core/"]
-COPY ["CoworkerHub.Data/CoworkerHub.Data.csproj", "CoworkerHub.Data/"]
+COPY ["CoworkerHub.Domain/CoworkerHub.Domain.csproj", "CoworkerHub.Domain/"]
+COPY ["CoworkerHub.Infrastructure/CoworkerHub.Infrastructure.csproj", "CoworkerHub.Infrastructure/"]
 RUN dotnet restore "./CoworkerHub.API/CoworkerHub.API.csproj"
 COPY . .
 WORKDIR "/src/CoworkerHub.API"

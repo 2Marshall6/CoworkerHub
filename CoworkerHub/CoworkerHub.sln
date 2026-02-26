@@ -5,13 +5,13 @@ VisualStudioVersion = 17.14.36414.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoworkerHub.API", "CoworkerHub.API\CoworkerHub.API.csproj", "{39CD8DDB-49A1-4C6F-B13E-2E7313EE875E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoworkerHub.Infrastructure", "CoworkerHub.Data\CoworkerHub.Infrastructure.csproj", "{08EE8226-5FC3-4647-9E84-0B4F52318515}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoworkerHub.Domain", "CoworkerHub.Core\CoworkerHub.Domain.csproj", "{22D22BCE-28D7-471E-9C7D-069669A5823C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoworkerHub.Application", "CoworkerHub.Application\CoworkerHub.Application.csproj", "{3D860444-7300-4251-914D-1FF13CB7311A}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{81DDED9D-158B-E303-5F62-77A2896D2A5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoworkerHub.Infrastructure", "CoworkerHub.Infrastructure\CoworkerHub.Infrastructure.csproj", "{E77665DF-AB55-14DC-7F37-C634A5294870}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoworkerHub.Domain", "CoworkerHub.Domain\CoworkerHub.Domain.csproj", "{13FDD814-B179-ED61-B717-70B3D98C806D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,14 +23,6 @@ Global
 		{39CD8DDB-49A1-4C6F-B13E-2E7313EE875E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39CD8DDB-49A1-4C6F-B13E-2E7313EE875E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39CD8DDB-49A1-4C6F-B13E-2E7313EE875E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{08EE8226-5FC3-4647-9E84-0B4F52318515}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{08EE8226-5FC3-4647-9E84-0B4F52318515}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{08EE8226-5FC3-4647-9E84-0B4F52318515}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{08EE8226-5FC3-4647-9E84-0B4F52318515}.Release|Any CPU.Build.0 = Release|Any CPU
-		{22D22BCE-28D7-471E-9C7D-069669A5823C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{22D22BCE-28D7-471E-9C7D-069669A5823C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{22D22BCE-28D7-471E-9C7D-069669A5823C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{22D22BCE-28D7-471E-9C7D-069669A5823C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3D860444-7300-4251-914D-1FF13CB7311A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3D860444-7300-4251-914D-1FF13CB7311A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D860444-7300-4251-914D-1FF13CB7311A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +31,14 @@ Global
 		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81DDED9D-158B-E303-5F62-77A2896D2A5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E77665DF-AB55-14DC-7F37-C634A5294870}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E77665DF-AB55-14DC-7F37-C634A5294870}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E77665DF-AB55-14DC-7F37-C634A5294870}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E77665DF-AB55-14DC-7F37-C634A5294870}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13FDD814-B179-ED61-B717-70B3D98C806D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13FDD814-B179-ED61-B717-70B3D98C806D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13FDD814-B179-ED61-B717-70B3D98C806D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13FDD814-B179-ED61-B717-70B3D98C806D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

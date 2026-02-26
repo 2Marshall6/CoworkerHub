@@ -19,13 +19,13 @@ namespace CoworkerHub.Application.Services
             _workspaceRepository = workspaceRepository;
         }
 
-        public async Task CreateWorkspaceAsync(CreateWorkspaceDTO createModel, CancellationToken cancellationToken)
+        public async Task<Workspace> CreateWorkspaceAsync(CreateWorkspaceDTO createModel, CancellationToken cancellationToken)
         {
+            Workspace workspace = _mapper.Map<Workspace>(createModel);
+
             await _unitOfWork.BeginTransactionAsync(cancellationToken);
             try
             {
-                var workspace = _mapper.Map<Workspace>(createModel);
-
                 await _workspaceRepository.CreateWorkspaceAsync(workspace, cancellationToken);
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
                 await _unitOfWork.CommitTransactionAsync(cancellationToken);
@@ -35,6 +35,8 @@ namespace CoworkerHub.Application.Services
                 await _unitOfWork.RollbackTransactionAsync(CancellationToken.None);
                 throw;
             }
+
+            return workspace;
         }
 
         public async Task DeleteWorkspaceAsync(int deleteId, CancellationToken cancellationToken)

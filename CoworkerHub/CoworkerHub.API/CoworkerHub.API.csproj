@@ -18,14 +18,15 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.4" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CoworkerHub.Application\CoworkerHub.Application.csproj" />
-    <ProjectReference Include="..\CoworkerHub.Core\CoworkerHub.Domain.csproj" />
-    <ProjectReference Include="..\CoworkerHub.Data\CoworkerHub.Infrastructure.csproj" />
+    <ProjectReference Include="..\CoworkerHub.Domain\CoworkerHub.Domain.csproj" />
+    <ProjectReference Include="..\CoworkerHub.Infrastructure\CoworkerHub.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
