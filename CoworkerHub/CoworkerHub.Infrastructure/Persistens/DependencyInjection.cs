@@ -1,4 +1,5 @@
 ﻿using CoworkerHub.Application.Interfaces;
+using CoworkerHub.Infrastructure.Persistence;
 using CoworkerHub.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

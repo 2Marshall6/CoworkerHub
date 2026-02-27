@@ -19,16 +19,16 @@ namespace CoworkerHub.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<WorkspaceDTO>>> GetAll()
+        public async Task<ActionResult<List<WorkspaceDTO>>> GetAll(CancellationToken cancellationToken)
         {
-            var workspaces = await _workspaceService.GetAllWorkspacesAsync();
+            var workspaces = await _workspaceService.GetAllWorkspacesAsync(cancellationToken);
             return Ok(workspaces); 
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<WorkspaceDTO>> GetById(int id)
+        public async Task<ActionResult<WorkspaceDTO>> GetById(int id, CancellationToken cancellationToken)
         {
-            var workspace = await _workspaceService.GetWorkspaceByIdAsync(id); 
+            var workspace = await _workspaceService.GetWorkspaceByIdAsync(id, cancellationToken); 
 
             if (workspace == null)
             {
@@ -50,19 +50,17 @@ namespace CoworkerHub.API.Controllers
 
             var workspace = await _workspaceService.CreateWorkspaceAsync(createModel, cancellationToken);
 
-            return CreatedAtAction(nameof(GetById), new { id = workspace.Id });
+            return CreatedAtAction(nameof(GetById), new { id = workspace.Id }, workspace);
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id, CancellationToken cancellationToken)
         {
-            var workspace = await _workspaceService.GetWorkspaceByIdAsync(id);
-            if (workspace!=null)
+            var isDeleted = await _workspaceService.DeleteWorkspaceAsync(id, cancellationToken);
+            if (!isDeleted)
             {
-                await _workspaceService.DeleteWorkspaceAsync(id, cancellationToken);
-                return Ok();
+                return NotFound($"Workspace with id {id} not found");
             }
-
             return NoContent();
         }
     }

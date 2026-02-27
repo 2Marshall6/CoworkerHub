@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-
+﻿
 namespace CoworkerHub.Domain.Entities
 {
     public class Desk

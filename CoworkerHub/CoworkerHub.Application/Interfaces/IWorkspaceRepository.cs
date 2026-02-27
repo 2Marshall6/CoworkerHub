@@ -5,9 +5,9 @@ namespace CoworkerHub.Application.Interfaces
 {
     public interface IWorkspaceRepository
     {
-        Task<List<Workspace>> GetAllWorkspacesAsync();
-        Task<Workspace> GetWorkspaceByIdAsync(int id);
+        Task<List<Workspace>> GetAllWorkspacesAsync(CancellationToken cancellationToken);
+        Task<Workspace?> GetWorkspaceByIdAsync(int id, CancellationToken cancellationToken);
         Task CreateWorkspaceAsync(Workspace workspace, CancellationToken cancellationToken);
-        Task DeleteWorkspaceAsync(int id, CancellationToken cancellationToken);
+        Task<int> DeleteWorkspaceAsync(int id, CancellationToken cancellationToken);
     }
 }

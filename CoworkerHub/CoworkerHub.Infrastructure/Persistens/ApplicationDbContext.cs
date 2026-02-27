@@ -18,12 +18,6 @@ namespace CoworkerHub.Infrastructure.Persistens
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(WorkspaceConfiguration).Assembly);
-
-            modelBuilder.Entity<Workspace>()
-                .HasMany(w => w.Desks)
-                .WithOne(d => d.Workspace)
-                .HasForeignKey(d => d.WorkspaceId)
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

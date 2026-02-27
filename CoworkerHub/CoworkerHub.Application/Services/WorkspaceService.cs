@@ -19,51 +19,34 @@ namespace CoworkerHub.Application.Services
             _workspaceRepository = workspaceRepository;
         }
 
-        public async Task<Workspace> CreateWorkspaceAsync(CreateWorkspaceDTO createModel, CancellationToken cancellationToken)
+        public async Task<WorkspaceDTO> CreateWorkspaceAsync(CreateWorkspaceDTO createModel, CancellationToken cancellationToken)
         {
             Workspace workspace = _mapper.Map<Workspace>(createModel);
 
-            await _unitOfWork.BeginTransactionAsync(cancellationToken);
-            try
-            {
-                await _workspaceRepository.CreateWorkspaceAsync(workspace, cancellationToken);
-                await _unitOfWork.SaveChangesAsync(cancellationToken);
-                await _unitOfWork.CommitTransactionAsync(cancellationToken);
-            }
-            catch (Exception)
-            {
-                await _unitOfWork.RollbackTransactionAsync(CancellationToken.None);
-                throw;
-            }
-
-            return workspace;
-        }
-
-        public async Task DeleteWorkspaceAsync(int deleteId, CancellationToken cancellationToken)
-        {
-            await _workspaceRepository.DeleteWorkspaceAsync(deleteId, cancellationToken);
+            await _workspaceRepository.CreateWorkspaceAsync(workspace, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+            return _mapper.Map<WorkspaceDTO>(workspace);
         }
 
-        public async Task<List<WorkspaceDTO>> GetAllWorkspacesAsync()
+        public async Task<bool> DeleteWorkspaceAsync(int deleteId, CancellationToken cancellationToken)
         {
-            var workspaces = await _workspaceRepository.GetAllWorkspacesAsync();
+            var deletedrows = await _workspaceRepository.DeleteWorkspaceAsync(deleteId, cancellationToken);
+            return deletedrows > 0;
+        }
+
+        public async Task<List<WorkspaceDTO>> GetAllWorkspacesAsync(CancellationToken cancellationToken)
+        {
+            var workspaces = await _workspaceRepository.GetAllWorkspacesAsync(cancellationToken);
             List<WorkspaceDTO> workspaceDTOList = new List<WorkspaceDTO>();
 
-            foreach (var workspace in workspaces)
-            {
-                var workspaceDTO = _mapper.Map<WorkspaceDTO>(workspace);
-                workspaceDTOList.Add(workspaceDTO);
-            }
-            return workspaceDTOList;
+            return _mapper.Map<List<WorkspaceDTO>>(workspaces);
         }
 
-        public async Task<WorkspaceDTO> GetWorkspaceByIdAsync(int getId)
+        public async Task<WorkspaceDTO?> GetWorkspaceByIdAsync(int getId, CancellationToken cancellationToken)
         {
-            var workspace = await _workspaceRepository.GetWorkspaceByIdAsync(getId);
-            var workspaceDTO = _mapper.Map<WorkspaceDTO>(workspace);
+            var workspace = await _workspaceRepository.GetWorkspaceByIdAsync(getId, cancellationToken);
 
-            return workspaceDTO;
+            return workspace == null ? null: _mapper.Map<WorkspaceDTO>(workspace);
         }
     }
 }

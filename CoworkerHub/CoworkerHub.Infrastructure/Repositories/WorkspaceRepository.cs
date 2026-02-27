@@ -15,32 +15,32 @@ namespace CoworkerHub.Infrastructure.Repositories
 
         public async Task CreateWorkspaceAsync(Workspace createModel, CancellationToken cancellationToken)
         {
-            var workspsce = await _context.Workspaces
+            var workspace = await _context.Workspaces
                 .AddAsync(createModel, cancellationToken);
         }
 
-        public async Task DeleteWorkspaceAsync(int workspaceId, CancellationToken cancellationToken)
+        public async Task<int> DeleteWorkspaceAsync(int workspaceId, CancellationToken cancellationToken)
         {
-            await _context.Workspaces
+            return await _context.Workspaces
                 .Where(w => w.Id == workspaceId)
                 .ExecuteDeleteAsync(cancellationToken);
         }
 
-        public async Task<List<Workspace>> GetAllWorkspacesAsync()
+        public async Task<List<Workspace>> GetAllWorkspacesAsync(CancellationToken cancellationToken)
         {
             var workspaces = await _context.Workspaces
                                     .AsNoTracking()
-                                    .ToListAsync();
+                                    .ToListAsync(cancellationToken);
             return workspaces;
         }
 
-        public async Task<Workspace> GetWorkspaceByIdAsync(int id)
+        public async Task<Workspace?> GetWorkspaceByIdAsync(int id, CancellationToken cancellationToken)
         {
-            var warkspace = await _context.Workspaces
+            var workspace = await _context.Workspaces
                                     .AsNoTracking()
                                     .Where(w => w.Id == id)
-                                    .FirstOrDefaultAsync();
-            return warkspace;
+                                    .FirstOrDefaultAsync(cancellationToken);
+            return workspace;
         }
     }
 }
