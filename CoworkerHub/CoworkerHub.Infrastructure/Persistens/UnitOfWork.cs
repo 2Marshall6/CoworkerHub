@@ -23,12 +23,13 @@ namespace CoworkerHub.Infrastructure.Persistence
         {
             _transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
         }
-
         public async Task CommitTransactionAsync(CancellationToken cancellationToken = default)
         {
             if (_transaction != null)
             {
                 await _transaction.CommitAsync(cancellationToken);
+                await _transaction.DisposeAsync();
+                _transaction = null;
             }
         }
 
@@ -37,7 +38,22 @@ namespace CoworkerHub.Infrastructure.Persistence
             if (_transaction != null)
             {
                 await _transaction.RollbackAsync(cancellationToken);
+                await _transaction.DisposeAsync();
+                _transaction = null;
             }
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            if (_transaction != null)
+            {
+                await _transaction.DisposeAsync();
+                _transaction = null;
+            }
+
+            await _context.DisposeAsync();
+
+            GC.SuppressFinalize(this);
         }
     }
 }

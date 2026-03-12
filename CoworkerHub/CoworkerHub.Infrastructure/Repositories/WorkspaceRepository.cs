@@ -15,7 +15,7 @@ namespace CoworkerHub.Infrastructure.Repositories
 
         public async Task CreateWorkspaceAsync(Workspace createModel, CancellationToken cancellationToken)
         {
-            var workspace = await _context.Workspaces
+            await _context.Workspaces
                 .AddAsync(createModel, cancellationToken);
         }
 
@@ -40,6 +40,7 @@ namespace CoworkerHub.Infrastructure.Repositories
                                     .AsNoTracking()
                                     .Where(w => w.Id == id)
                                     .FirstOrDefaultAsync(cancellationToken);
+            
             return workspace;
         }
     }

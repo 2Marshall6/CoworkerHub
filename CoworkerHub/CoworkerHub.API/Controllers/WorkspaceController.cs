@@ -1,12 +1,14 @@
 ﻿using CoworkerHub.Application.DTOs;
 using CoworkerHub.Application.Interfaces;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoworkerHub.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class WorkspacesController : ControllerBase
     {
         private readonly IWorkspaceService _workspaceService;
@@ -26,13 +28,13 @@ namespace CoworkerHub.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<WorkspaceDTO>> GetById(int id, CancellationToken cancellationToken)
+        public async Task<ActionResult<WorkspaceDTO>> GetById(int getId, CancellationToken cancellationToken)
         {
-            var workspace = await _workspaceService.GetWorkspaceByIdAsync(id, cancellationToken); 
+            var workspace = await _workspaceService.GetWorkspaceByIdAsync(getId, cancellationToken); 
 
             if (workspace == null)
             {
-                return NotFound($"Workspace with id {id} not found");
+                return NotFound($"Workspace with id {getId} not found");
             }
 
             return Ok(workspace);

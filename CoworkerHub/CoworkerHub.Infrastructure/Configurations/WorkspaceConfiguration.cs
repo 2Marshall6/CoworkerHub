@@ -10,7 +10,8 @@ namespace CoworkerHub.Infrastructure.Configurations
         {
             builder.HasKey(w => w.Id);
             builder.Property(w => w.Name).IsRequired().HasMaxLength(100);
-            builder.HasIndex(w => w.Name).IsUnique(); // Запрещаем одинаковые названия
+            builder.HasIndex(w => w.Name).IsUnique();
+            builder.Property(w => w.Description).HasMaxLength(100);
 
             builder.HasMany(w => w.Desks)
                 .WithOne(d => d.Workspace)

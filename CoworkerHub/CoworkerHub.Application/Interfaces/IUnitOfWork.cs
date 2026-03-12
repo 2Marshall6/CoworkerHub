@@ -1,7 +1,7 @@
 ﻿
 namespace CoworkerHub.Application.Interfaces
 {
-    public interface IUnitOfWork 
+    public interface IUnitOfWork : IAsyncDisposable
     {
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
         Task BeginTransactionAsync(CancellationToken cancellationToken);

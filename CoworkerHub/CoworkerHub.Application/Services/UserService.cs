@@ -1,0 +1,86 @@
+﻿using AutoMapper;
+using CoworkerHub.Application.DTOs;
+using CoworkerHub.Application.Interfaces;
+using CoworkerHub.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using System.Data;
+
+namespace CoworkerHub.Application.Services
+{
+    public class UserService : IUserService
+    {
+        private readonly UserManager<User> _userManager;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+        private readonly ITokenService _tokenService;
+
+        public UserService(UserManager<User> userManager, ITokenService jwtService, IMapper mapper, IUnitOfWork unitOfWork)
+        {
+            _userManager = userManager;
+            _tokenService = jwtService;
+            _mapper = mapper;
+            _unitOfWork = unitOfWork;
+        }
+
+        public async Task<UserDTO> RegisterUserAsync(RegisterUserDTO createModel, CancellationToken cancellationToken)
+        {
+            User user = _mapper.Map<User>(createModel);
+
+            var result = await _userManager.CreateAsync(user, createModel.Password);
+
+            if (!result.Succeeded)
+            {
+                throw new Exception(string.Join(", ", result.Errors.Select(e => e.Description)));
+            }
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            return _mapper.Map<UserDTO>(user);
+        }
+
+        public async Task<AuthenticationDTO> LoginUserAsync(LoginUserDTO loginModel)
+        {
+            var user = await _userManager.FindByEmailAsync(loginModel.Email);
+
+            if (user == null || !await _userManager.CheckPasswordAsync(user, loginModel.Password))
+            {
+                throw new UnauthorizedAccessException("Неверный email или пароль.");
+            }
+
+            return await _tokenService.GenerateJwt(user.Id, user.UserName);
+        }
+        public async Task<AuthenticationDTO> RefreshTokensAsync(string oldRefreshToken)
+        {
+            var userId = await _tokenService.ValidateRefreshToken(oldRefreshToken);
+
+            if (userId == null)
+                return null; 
+
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null)
+            {
+                throw new Exception("User not found.");
+            }
+
+            var newAuthData = await _tokenService.GenerateJwt(user.Id, user.UserName);
+
+            return newAuthData;
+        }
+
+        public Task ChangePasswordAsync(ChangeUserPasswordDTO changeUserPasswordModel, CancellationToken cancellation)
+        {
+            var user = _userManager.FindByEmailAsync(changeUserPasswordModel.Email).Result;
+
+            var result = _userManager.ChangePasswordAsync(
+                user,
+                changeUserPasswordModel.CurrentPassword,
+                changeUserPasswordModel.NewPassword
+            ).Result;
+
+            if (!result.Succeeded)
+            {
+                throw new Exception(string.Join(", ", result.Errors.Select(e => e.Description)));
+            }
+            return Task.CompletedTask;
+        }
+    }
+}

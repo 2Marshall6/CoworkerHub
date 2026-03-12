@@ -10,6 +10,8 @@ namespace CoworkerHub.API.MappingProfiles
         {
             CreateMap<Workspace, WorkspaceDTO>();
             CreateMap<CreateWorkspaceDTO, Workspace>();
+            CreateMap<User, UserDTO>();
+            CreateMap<RegisterUserDTO, User>();
         }
             
     }
