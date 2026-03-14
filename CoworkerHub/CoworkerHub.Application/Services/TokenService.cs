@@ -14,13 +14,11 @@ namespace CoworkerHub.Application.Services
     public class TokenService : ITokenService
     {
         private readonly JwtOptions _JwtOptions;
-        private readonly UserManager<User> _userManager;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
-        public TokenService(IOptions<JwtOptions> jwtOptions, IRefreshTokenRepository refreshTokenRepository, UserManager<User> userManager)
+        public TokenService(IOptions<JwtOptions> jwtOptions, IRefreshTokenRepository refreshTokenRepository)
         {
             _JwtOptions = jwtOptions.Value;
             _refreshTokenRepository = refreshTokenRepository;
-            _userManager = userManager;
         }
 
         public async Task<AuthenticationDTO> GenerateJwt(Guid userId, string userName)
@@ -79,11 +77,6 @@ namespace CoworkerHub.Application.Services
             }
 
             await _refreshTokenRepository.DeleteRefreshTokenAsync(token);
-            var user = await _userManager.FindByIdAsync(refreshToken.UserId.ToString());
-            if (user == null)
-            {
-                throw new Exception("User not found for the given refresh token.");
-            }
 
             return refreshToken.UserId;
         }

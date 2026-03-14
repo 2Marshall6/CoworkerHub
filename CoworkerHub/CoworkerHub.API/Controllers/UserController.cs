@@ -25,6 +25,7 @@ namespace CoworkerHub.API.Controllers
             _authorizationService = authorizationService;
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<UserDTO>> Create(RegisterUserDTO createModel, CancellationToken cancellationToken)
         {
@@ -40,6 +41,7 @@ namespace CoworkerHub.API.Controllers
             return Ok(user);
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult<AuthenticationDTO>> Login(LoginUserDTO loginModel)
         {
@@ -78,19 +80,15 @@ namespace CoworkerHub.API.Controllers
             {
                 return Unauthorized("Invalid or expired refresh token.");
             }
-
-            // 3. Кладем НОВЫЙ рефреш-токен обратно в куку
             Response.Cookies.Append("refreshToken", result.RefreshToken, new CookieOptions
             {
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.Strict,
-                Expires = DateTime.UtcNow.AddDays(7) // Или сколько у тебя живет токен
+                Expires = DateTime.UtcNow.AddDays(7)
             });
 
-            // 4. Отдаем на фронтенд ТОЛЬКО Access токен
-            // (RefreshToken из DTO лучше вообще убрать, чтобы фронтенд его даже не видел)
-            return Ok(new { result.AccessToken, result.UserName, result.ExpiresIn });
+            return Ok(result);
         }
     }
 }

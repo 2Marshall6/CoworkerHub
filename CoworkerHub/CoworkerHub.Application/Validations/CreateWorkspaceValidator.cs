@@ -8,7 +8,7 @@ namespace CoworkerHub.Application.Validations
         public CreateWorkspaceValidator()
         {
             RuleFor(workspace =>  workspace.Name).NotEmpty();
-            RuleFor(workspace => workspace.Description).MinimumLength(3).NotEmpty();
+            RuleFor(workspace => workspace.Description).MinimumLength(3);
         }
     }
 }

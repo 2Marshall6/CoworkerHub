@@ -37,7 +37,6 @@ namespace CoworkerHub.Application.Services
         public async Task<List<WorkspaceDTO>> GetAllWorkspacesAsync(CancellationToken cancellationToken)
         {
             var workspaces = await _workspaceRepository.GetAllWorkspacesAsync(cancellationToken);
-            List<WorkspaceDTO> workspaceDTOList = new List<WorkspaceDTO>();
 
             return _mapper.Map<List<WorkspaceDTO>>(workspaces);
         }

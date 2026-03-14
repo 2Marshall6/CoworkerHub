@@ -10,16 +10,14 @@ namespace CoworkerHub.Application.Services
     public class UserService : IUserService
     {
         private readonly UserManager<User> _userManager;
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ITokenService _tokenService;
 
-        public UserService(UserManager<User> userManager, ITokenService jwtService, IMapper mapper, IUnitOfWork unitOfWork)
+        public UserService(UserManager<User> userManager, ITokenService jwtService, IMapper mapper)
         {
             _userManager = userManager;
             _tokenService = jwtService;
             _mapper = mapper;
-            _unitOfWork = unitOfWork;
         }
 
         public async Task<UserDTO> RegisterUserAsync(RegisterUserDTO createModel, CancellationToken cancellationToken)
@@ -33,7 +31,6 @@ namespace CoworkerHub.Application.Services
                 throw new Exception(string.Join(", ", result.Errors.Select(e => e.Description)));
             }
 
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
             return _mapper.Map<UserDTO>(user);
         }
 
@@ -66,21 +63,20 @@ namespace CoworkerHub.Application.Services
             return newAuthData;
         }
 
-        public Task ChangePasswordAsync(ChangeUserPasswordDTO changeUserPasswordModel, CancellationToken cancellation)
+        public async Task ChangePasswordAsync(ChangeUserPasswordDTO changeUserPasswordModel, CancellationToken cancellation)
         {
-            var user = _userManager.FindByEmailAsync(changeUserPasswordModel.Email).Result;
+            var user = await _userManager.FindByEmailAsync(changeUserPasswordModel.Email);
 
-            var result = _userManager.ChangePasswordAsync(
+            var result = await _userManager.ChangePasswordAsync(
                 user,
                 changeUserPasswordModel.CurrentPassword,
                 changeUserPasswordModel.NewPassword
-            ).Result;
+            );
 
             if (!result.Succeeded)
             {
                 throw new Exception(string.Join(", ", result.Errors.Select(e => e.Description)));
             }
-            return Task.CompletedTask;
         }
     }
 }

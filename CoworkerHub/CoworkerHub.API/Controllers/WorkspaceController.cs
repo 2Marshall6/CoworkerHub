@@ -28,13 +28,13 @@ namespace CoworkerHub.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<WorkspaceDTO>> GetById(int getId, CancellationToken cancellationToken)
+        public async Task<ActionResult<WorkspaceDTO>> GetById(int id, CancellationToken cancellationToken)
         {
-            var workspace = await _workspaceService.GetWorkspaceByIdAsync(getId, cancellationToken); 
+            var workspace = await _workspaceService.GetWorkspaceByIdAsync(id, cancellationToken); 
 
             if (workspace == null)
             {
-                return NotFound($"Workspace with id {getId} not found");
+                return NotFound($"Workspace with id {id} not found");
             }
 
             return Ok(workspace);
