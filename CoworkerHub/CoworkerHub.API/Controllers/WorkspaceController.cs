@@ -3,6 +3,7 @@ using CoworkerHub.Application.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using CoworkerHub.Application.Exceptions;
 
 namespace CoworkerHub.API.Controllers
 {
@@ -32,11 +33,6 @@ namespace CoworkerHub.API.Controllers
         {
             var workspace = await _workspaceService.GetWorkspaceByIdAsync(id, cancellationToken); 
 
-            if (workspace == null)
-            {
-                return NotFound($"Workspace with id {id} not found");
-            }
-
             return Ok(workspace);
         }
 
@@ -44,10 +40,10 @@ namespace CoworkerHub.API.Controllers
         public async Task<ActionResult> Create(CreateWorkspaceDTO createModel, CancellationToken cancellationToken)
         {
             var validationResult = await _validator.ValidateAsync(createModel, cancellationToken);
-
+           
             if (!validationResult.IsValid)
             {
-                return BadRequest(validationResult.Errors);
+                throw new AppValidationException(string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage)));
             }
 
             var workspace = await _workspaceService.CreateWorkspaceAsync(createModel, cancellationToken);
@@ -58,11 +54,8 @@ namespace CoworkerHub.API.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id, CancellationToken cancellationToken)
         {
-            var isDeleted = await _workspaceService.DeleteWorkspaceAsync(id, cancellationToken);
-            if (!isDeleted)
-            {
-                return NotFound($"Workspace with id {id} not found");
-            }
+            await _workspaceService.DeleteWorkspaceAsync(id, cancellationToken);
+            
             return NoContent();
         }
     }

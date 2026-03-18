@@ -8,6 +8,6 @@ namespace CoworkerHub.Application.Interfaces
         Task<List<WorkspaceDTO>> GetAllWorkspacesAsync(CancellationToken cancellationToken);
         Task<WorkspaceDTO?> GetWorkspaceByIdAsync(int id, CancellationToken cancellationToken);
         Task<WorkspaceDTO> CreateWorkspaceAsync(CreateWorkspaceDTO workspace, CancellationToken cancellationToken);
-        Task<bool> DeleteWorkspaceAsync(int Id, CancellationToken cancellationToken);
+        Task DeleteWorkspaceAsync(int Id, CancellationToken cancellationToken);
     }
 }

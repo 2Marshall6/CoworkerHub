@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CoworkerHub.API.Models;
+using CoworkerHub.Application.Exceptions;
+using Microsoft.AspNetCore.Http;
 using System.Net;
 
 namespace CoworkerHub.API.Middlewares
@@ -32,17 +34,19 @@ namespace CoworkerHub.API.Middlewares
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = exception switch
             {
-                ArgumentException => (int)HttpStatusCode.BadRequest,
+                AppValidationException => 400,
+                NotFoundException => 404,
+                UnauthorizedException => 401,
+                AlreadyExistsException => 409,
                 _ => (int)HttpStatusCode.InternalServerError,
             };
-
-            var result = new
+            var errorResponse = new ErrorResponse
             {
-                statusCode = context.Response.StatusCode,
-                message = exception.Message
+                StatusCode = context.Response.StatusCode,
+                Message = exception.Message
             };
 
-            return context.Response.WriteAsJsonAsync(result);
+            return context.Response.WriteAsJsonAsync(errorResponse);
         }
 
     }

@@ -10,7 +10,7 @@ namespace CoworkerHub.Application.Validations
         {
             RuleFor(user => user.UserName).NotEmpty();
             RuleFor(user => user.Email).NotEmpty().EmailAddress();
-            RuleFor(user => user.Password).MinimumLength(6).MaximumLength(50);
+            RuleFor(user => user.Password).NotEmpty().MinimumLength(6).MaximumLength(50);
         }
     }
 }

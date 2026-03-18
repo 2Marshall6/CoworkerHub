@@ -2,7 +2,7 @@
 using CoworkerHub.Application.DTOs;
 using CoworkerHub.Domain.Entities;
 
-namespace CoworkerHub.API.MappingProfiles
+namespace CoworkerHub.Application.MappingProfiles
 {
     public class AppMappingProfile : Profile
     {

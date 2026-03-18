@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using CoworkerHub.Application.DTOs;
+using CoworkerHub.Application.Exceptions;
 using CoworkerHub.Application.Interfaces;
 using CoworkerHub.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
-using System.Data;
 
 namespace CoworkerHub.Application.Services
 {
@@ -28,7 +28,7 @@ namespace CoworkerHub.Application.Services
 
             if (!result.Succeeded)
             {
-                throw new Exception(string.Join(", ", result.Errors.Select(e => e.Description)));
+                throw new AppValidationException(string.Join(", ", result.Errors.Select(e => e.Description)));
             }
 
             return _mapper.Map<UserDTO>(user);
@@ -40,7 +40,7 @@ namespace CoworkerHub.Application.Services
 
             if (user == null || !await _userManager.CheckPasswordAsync(user, loginModel.Password))
             {
-                throw new UnauthorizedAccessException("Неверный email или пароль.");
+                throw new UnauthorizedException("Wrong password or email.");
             }
 
             return await _tokenService.GenerateJwt(user.Id, user.UserName);
@@ -49,13 +49,10 @@ namespace CoworkerHub.Application.Services
         {
             var userId = await _tokenService.ValidateRefreshToken(oldRefreshToken);
 
-            if (userId == null)
-                return null; 
-
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user == null)
             {
-                throw new Exception("User not found.");
+                throw new NotFoundException("User not found.");
             }
 
             var newAuthData = await _tokenService.GenerateJwt(user.Id, user.UserName);
@@ -75,7 +72,7 @@ namespace CoworkerHub.Application.Services
 
             if (!result.Succeeded)
             {
-                throw new Exception(string.Join(", ", result.Errors.Select(e => e.Description)));
+                throw new AppValidationException(string.Join(", ", result.Errors.Select(e => e.Description)));
             }
         }
     }

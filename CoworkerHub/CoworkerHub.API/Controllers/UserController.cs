@@ -1,10 +1,9 @@
 ﻿using CoworkerHub.Application.DTOs;
+using CoworkerHub.Application.Exceptions;
 using CoworkerHub.Application.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
 
 namespace CoworkerHub.API.Controllers
 {
@@ -13,16 +12,14 @@ namespace CoworkerHub.API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly ITokenService _authorizationService;
         private readonly IValidator<RegisterUserDTO> _registerValidator;
         private readonly IValidator<LoginUserDTO> _loginValidator;
 
-        public UserController(IUserService workspaceService, IValidator<RegisterUserDTO> registerValidator, IValidator<LoginUserDTO> loginValodator, ITokenService authorizationService)
+        public UserController(IUserService userService, IValidator<RegisterUserDTO> registerValidator, IValidator<LoginUserDTO> loginValidator)
         {
-            _userService = workspaceService;
+            _userService = userService;
             _registerValidator = registerValidator;
-            _loginValidator = loginValodator;
-            _authorizationService = authorizationService;
+            _loginValidator = loginValidator;
         }
 
         [AllowAnonymous]
@@ -33,7 +30,7 @@ namespace CoworkerHub.API.Controllers
 
             if (!validationResult.IsValid)
             {
-                return BadRequest(validationResult.Errors);
+                throw new AppValidationException(string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage)));
             }
 
             var user = await _userService.RegisterUserAsync(createModel, cancellationToken);
@@ -48,7 +45,7 @@ namespace CoworkerHub.API.Controllers
             var validationResult = await _loginValidator.ValidateAsync(loginModel);
             if (!validationResult.IsValid)
             {
-                return BadRequest(validationResult.Errors);
+                throw new AppValidationException(string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage)));
             }
 
             var authResult = await _userService.LoginUserAsync(loginModel);
@@ -71,15 +68,11 @@ namespace CoworkerHub.API.Controllers
 
             if (string.IsNullOrWhiteSpace(oldToken))
             {
-                return Unauthorized("No refresh token found in cookies.");
+                throw new UnauthorizedException("Refresh token is missing.");
             }
 
             var result = await _userService.RefreshTokensAsync(oldToken);
 
-            if (result == null)
-            {
-                return Unauthorized("Invalid or expired refresh token.");
-            }
             Response.Cookies.Append("refreshToken", result.RefreshToken, new CookieOptions
             {
                 HttpOnly = true,

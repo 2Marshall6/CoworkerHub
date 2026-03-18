@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using CoworkerHub.Application.DTOs;
+using CoworkerHub.Application.Exceptions;
 using CoworkerHub.Application.Interfaces;
 using CoworkerHub.Domain.Entities;
-using System.Data;
 
 namespace CoworkerHub.Application.Services
 {
@@ -25,13 +25,17 @@ namespace CoworkerHub.Application.Services
 
             await _workspaceRepository.CreateWorkspaceAsync(workspace, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+
             return _mapper.Map<WorkspaceDTO>(workspace);
         }
 
-        public async Task<bool> DeleteWorkspaceAsync(int deleteId, CancellationToken cancellationToken)
+        public async Task DeleteWorkspaceAsync(int deleteId, CancellationToken cancellationToken)
         {
             var deletedrows = await _workspaceRepository.DeleteWorkspaceAsync(deleteId, cancellationToken);
-            return deletedrows > 0;
+            if (deletedrows == 0)
+            {
+                throw new NotFoundException($"Workspace with id {deleteId} not found.");
+            }
         }
 
         public async Task<List<WorkspaceDTO>> GetAllWorkspacesAsync(CancellationToken cancellationToken)
@@ -44,8 +48,11 @@ namespace CoworkerHub.Application.Services
         public async Task<WorkspaceDTO?> GetWorkspaceByIdAsync(int getId, CancellationToken cancellationToken)
         {
             var workspace = await _workspaceRepository.GetWorkspaceByIdAsync(getId, cancellationToken);
+            if (workspace == null)
+                throw new NotFoundException($"Workspace with id {getId} not found.");
+            
 
-            return workspace == null ? null: _mapper.Map<WorkspaceDTO>(workspace);
+            return _mapper.Map<WorkspaceDTO>(workspace);
         }
     }
 }

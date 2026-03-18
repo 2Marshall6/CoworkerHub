@@ -1,7 +1,7 @@
 ﻿using CoworkerHub.Application.DTOs;
+using CoworkerHub.Application.Exceptions;
 using CoworkerHub.Application.Interfaces;
 using CoworkerHub.Domain.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,9 +13,9 @@ namespace CoworkerHub.Application.Services
 {
     public class TokenService : ITokenService
     {
-        private readonly JwtOptions _JwtOptions;
+        private readonly TokenOptions _JwtOptions;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
-        public TokenService(IOptions<JwtOptions> jwtOptions, IRefreshTokenRepository refreshTokenRepository)
+        public TokenService(IOptions<TokenOptions> jwtOptions, IRefreshTokenRepository refreshTokenRepository)
         {
             _JwtOptions = jwtOptions.Value;
             _refreshTokenRepository = refreshTokenRepository;
@@ -55,12 +55,12 @@ namespace CoworkerHub.Application.Services
 
         public async Task<string> GenerateRefreshToken(Guid userId)
         {
-            var refreshTokenValidMins = _JwtOptions.TokenLifetimeInMinutes * 2;
+            var refreshTokenValidDays = _JwtOptions.RefreshTokenLifetimeInDays;
             var refreshToken = new RefreshToken
             {
                 UserId = userId,
                 Token = Guid.NewGuid().ToString(),
-                ExpiresAt = DateTime.UtcNow.AddMinutes(refreshTokenValidMins)
+                ExpiresAt = DateTime.UtcNow.AddDays(refreshTokenValidDays)
             };
 
             await _refreshTokenRepository.AddRefreshTokenAsync(refreshToken);
@@ -73,7 +73,7 @@ namespace CoworkerHub.Application.Services
             var refreshToken = await _refreshTokenRepository.GetRefreshTokenAsync(token);
             if (refreshToken == null || refreshToken.ExpiresAt < DateTime.UtcNow)
             {
-                return null;
+                throw new UnauthorizedException("Refresh token is expired");
             }
 
             await _refreshTokenRepository.DeleteRefreshTokenAsync(token);

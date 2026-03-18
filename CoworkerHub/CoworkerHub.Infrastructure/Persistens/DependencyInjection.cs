@@ -1,5 +1,5 @@
 ﻿using CoworkerHub.Application.Interfaces;
-using CoworkerHub.Domain.Entities;
+using CoworkerHub.Application.DTOs;
 using CoworkerHub.Infrastructure.Persistence;
 using CoworkerHub.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using CoworkerHub.Domain.Entities;
 
 
 namespace CoworkerHub.Infrastructure.Persistens
@@ -23,7 +24,7 @@ namespace CoworkerHub.Infrastructure.Persistens
             services.AddScoped<IWorkspaceRepository, WorkspaceRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.Configure<IdentityOptions>(options =>
@@ -44,7 +45,7 @@ namespace CoworkerHub.Infrastructure.Persistens
                 // User settings.
                 options.User.AllowedUserNameCharacters =
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-                options.User.RequireUniqueEmail = false;
+                options.User.RequireUniqueEmail = true;
             });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
@@ -65,7 +66,7 @@ namespace CoworkerHub.Infrastructure.Persistens
                 };
             });
 
-            services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
+            services.Configure<Application.DTOs.TokenOptions>(configuration.GetSection(nameof(Application.DTOs.TokenOptions)));
 
             return services;
         }
