@@ -1,8 +1,8 @@
 ﻿using CoworkerHub.Application.DTOs.Workspace;
 using CoworkerHub.Application.Interfaces;
+using CoworkerHub.Application.Options;
 using CoworkerHub.Domain.Entities;
 using CoworkerHub.Infrastructure.Persistens;
-using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoworkerHub.Infrastructure.Repositories
@@ -28,25 +28,24 @@ namespace CoworkerHub.Infrastructure.Repositories
                 .ExecuteDeleteAsync(cancellationToken);
         }
 
-        public async Task<PageModel<Workspace>> GetAllWorkspacesAsync(GetWorkspacesListDTO getWorkspacesListDTO, CancellationToken cancellationToken)
+        public async Task<PageModel<Workspace>> GetAllWorkspacesAsync(int pageNumber, int pageSize, CancellationToken cancellationToken)
         {
             var query = _context.Workspaces
-                                .AsNoTracking()
-                                .AsQueryable();
+                                .AsNoTracking();
             
             var totalCount = await query.CountAsync(cancellationToken);
 
-            var items = await query.Skip((getWorkspacesListDTO.PageNumber - 1) * getWorkspacesListDTO.PageSize)
-                                .Take(getWorkspacesListDTO.PageSize)
+            var items = await query.Skip((pageNumber - 1) * pageSize)
+                                .Take(pageSize)
                                 .ToListAsync(cancellationToken);
 
-            var nextPage = getWorkspacesListDTO.PageNumber * getWorkspacesListDTO.PageSize < totalCount
-                            ? getWorkspacesListDTO.PageNumber + 1
-                            : 0;
+            int? nextPage = pageNumber * pageSize < totalCount
+                            ? pageNumber + 1
+                            : null;
 
             return new PageModel<Workspace>
             (
-                getWorkspacesListDTO.PageNumber,
+                pageNumber,
                 nextPage,
                 totalCount,
                 items
@@ -57,9 +56,9 @@ namespace CoworkerHub.Infrastructure.Repositories
         {
             var workspace = await _context.Workspaces
                                     .AsNoTracking()
-                                    .Where(w => w.Id == id)
-                                    .FirstOrDefaultAsync(cancellationToken);
-            
+                                    .FirstOrDefaultAsync(w => w.Id == id, cancellationToken);
+
+
             return workspace;
         }
     }

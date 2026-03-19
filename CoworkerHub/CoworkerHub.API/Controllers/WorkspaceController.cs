@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using CoworkerHub.Application.Exceptions;
 using CoworkerHub.Application.DTOs.Workspace;
 using CoworkerHub.Domain.Entities;
+using CoworkerHub.Application.Options;
 
 namespace CoworkerHub.API.Controllers
 {

@@ -1,6 +1,7 @@
 ﻿using CoworkerHub.Application.DTOs.Authentication;
 using CoworkerHub.Application.Exceptions;
 using CoworkerHub.Application.Interfaces;
+using CoworkerHub.Application.Options;
 using CoworkerHub.Domain.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

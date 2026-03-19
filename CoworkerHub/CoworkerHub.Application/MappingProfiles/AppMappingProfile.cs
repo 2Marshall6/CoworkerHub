@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CoworkerHub.Application.DTOs.Authentication;
 using CoworkerHub.Application.DTOs.Workspace;
+using CoworkerHub.Application.Options;
 using CoworkerHub.Domain.Entities;
 
 namespace CoworkerHub.Application.MappingProfiles

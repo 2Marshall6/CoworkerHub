@@ -53,7 +53,7 @@ namespace CoworkerHub.API.Controllers
             Response.Cookies.Append("refreshToken", authResult.RefreshToken, new CookieOptions
             {
                 HttpOnly = true,
-                Secure = true, // Включишь, когда будет HTTPS
+                Secure = Request.IsHttps, // Включишь, когда будет HTTPS
                 SameSite = SameSiteMode.Strict,
                 Expires = DateTime.UtcNow.AddDays(7)
             });

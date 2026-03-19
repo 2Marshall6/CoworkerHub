@@ -1,4 +1,5 @@
 ﻿using CoworkerHub.Application.DTOs.Workspace;
+using CoworkerHub.Application.Options;
 using CoworkerHub.Domain.Entities;
 
 namespace CoworkerHub.Application.Interfaces

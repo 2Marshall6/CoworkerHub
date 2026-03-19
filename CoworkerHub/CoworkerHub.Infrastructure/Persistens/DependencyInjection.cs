@@ -9,7 +9,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using CoworkerHub.Domain.Entities;
-using CoworkerHub.Application.DTOs.Authentication;
 
 
 namespace CoworkerHub.Infrastructure.Persistens
@@ -66,7 +65,7 @@ namespace CoworkerHub.Infrastructure.Persistens
                 };
             });
 
-            services.Configure<Application.DTOs.Authentication.TokenOptions>(configuration.GetSection(nameof(Application.DTOs.Authentication.TokenOptions)));
+            services.Configure<Application.Options.TokenOptions>(configuration.GetSection(nameof(Application.Options.TokenOptions)));
 
             return services;
         }

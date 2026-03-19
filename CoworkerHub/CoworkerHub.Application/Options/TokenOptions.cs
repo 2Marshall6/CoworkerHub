@@ -1,4 +1,4 @@
-﻿namespace CoworkerHub.Application.DTOs.Authentication
+﻿namespace CoworkerHub.Application.Options
 {
     public class TokenOptions
     {
