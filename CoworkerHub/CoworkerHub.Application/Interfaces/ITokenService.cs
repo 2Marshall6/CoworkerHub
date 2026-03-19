@@ -1,4 +1,4 @@
-﻿using CoworkerHub.Application.DTOs;
+﻿using CoworkerHub.Application.DTOs.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Linq;

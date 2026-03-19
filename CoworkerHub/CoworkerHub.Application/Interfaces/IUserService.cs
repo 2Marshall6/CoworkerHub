@@ -1,4 +1,4 @@
-﻿using CoworkerHub.Application.DTOs;
+﻿using CoworkerHub.Application.DTOs.Authentication;
 
 namespace CoworkerHub.Application.Interfaces
 {

@@ -1,5 +1,4 @@
 ﻿using CoworkerHub.Application.Interfaces;
-using CoworkerHub.Application.DTOs;
 using CoworkerHub.Infrastructure.Persistence;
 using CoworkerHub.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -10,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using CoworkerHub.Domain.Entities;
+using CoworkerHub.Application.DTOs.Authentication;
 
 
 namespace CoworkerHub.Infrastructure.Persistens
@@ -55,9 +55,9 @@ namespace CoworkerHub.Infrastructure.Persistens
                 options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidIssuer = configuration["JwtOptions:Issuer"],
-                    ValidAudience = configuration["JwtOptions:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtOptions:Key"]!)),
+                    ValidIssuer = configuration["TokenOptions:Issuer"],
+                    ValidAudience = configuration["TokenOptions:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["TokenOptions:Key"]!)),
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
@@ -66,7 +66,7 @@ namespace CoworkerHub.Infrastructure.Persistens
                 };
             });
 
-            services.Configure<Application.DTOs.TokenOptions>(configuration.GetSection(nameof(Application.DTOs.TokenOptions)));
+            services.Configure<Application.DTOs.Authentication.TokenOptions>(configuration.GetSection(nameof(Application.DTOs.Authentication.TokenOptions)));
 
             return services;
         }

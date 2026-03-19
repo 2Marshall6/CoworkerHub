@@ -1,6 +1,4 @@
-﻿
-
-namespace CoworkerHub.Application.DTOs
+﻿namespace CoworkerHub.Application.DTOs.Authentication
 {
     public class RegisterUserDTO
     {

@@ -1,4 +1,4 @@
-﻿using CoworkerHub.Application.DTOs;
+﻿using CoworkerHub.Application.DTOs.Authentication;
 using CoworkerHub.Application.Exceptions;
 using CoworkerHub.Application.Interfaces;
 using FluentValidation;

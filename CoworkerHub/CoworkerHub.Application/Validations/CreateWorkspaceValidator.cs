@@ -1,4 +1,4 @@
-﻿using CoworkerHub.Application.DTOs;
+﻿using CoworkerHub.Application.DTOs.Workspace;
 using FluentValidation;
 
 namespace CoworkerHub.Application.Validations

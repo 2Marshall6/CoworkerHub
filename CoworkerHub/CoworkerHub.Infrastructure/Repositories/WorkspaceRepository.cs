@@ -1,6 +1,8 @@
-﻿using CoworkerHub.Application.Interfaces;
+﻿using CoworkerHub.Application.DTOs.Workspace;
+using CoworkerHub.Application.Interfaces;
 using CoworkerHub.Domain.Entities;
 using CoworkerHub.Infrastructure.Persistens;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoworkerHub.Infrastructure.Repositories
@@ -26,12 +28,29 @@ namespace CoworkerHub.Infrastructure.Repositories
                 .ExecuteDeleteAsync(cancellationToken);
         }
 
-        public async Task<List<Workspace>> GetAllWorkspacesAsync(CancellationToken cancellationToken)
+        public async Task<PageModel<Workspace>> GetAllWorkspacesAsync(GetWorkspacesListDTO getWorkspacesListDTO, CancellationToken cancellationToken)
         {
-            var workspaces = await _context.Workspaces
-                                    .AsNoTracking()
-                                    .ToListAsync(cancellationToken);
-            return workspaces;
+            var query = _context.Workspaces
+                                .AsNoTracking()
+                                .AsQueryable();
+            
+            var totalCount = await query.CountAsync(cancellationToken);
+
+            var items = await query.Skip((getWorkspacesListDTO.PageNumber - 1) * getWorkspacesListDTO.PageSize)
+                                .Take(getWorkspacesListDTO.PageSize)
+                                .ToListAsync(cancellationToken);
+
+            var nextPage = getWorkspacesListDTO.PageNumber * getWorkspacesListDTO.PageSize < totalCount
+                            ? getWorkspacesListDTO.PageNumber + 1
+                            : 0;
+
+            return new PageModel<Workspace>
+            (
+                getWorkspacesListDTO.PageNumber,
+                nextPage,
+                totalCount,
+                items
+            );
         }
 
         public async Task<Workspace?> GetWorkspaceByIdAsync(int id, CancellationToken cancellationToken)

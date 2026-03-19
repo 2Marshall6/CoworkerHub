@@ -1,9 +1,10 @@
-﻿using CoworkerHub.Application.DTOs;
-using CoworkerHub.Application.Interfaces;
+﻿using CoworkerHub.Application.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using CoworkerHub.Application.Exceptions;
+using CoworkerHub.Application.DTOs.Workspace;
+using CoworkerHub.Domain.Entities;
 
 namespace CoworkerHub.API.Controllers
 {
@@ -22,9 +23,9 @@ namespace CoworkerHub.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<WorkspaceDTO>>> GetAll(CancellationToken cancellationToken)
+        public async Task<ActionResult<PageModel<WorkspaceDTO>>> GetAll([FromQuery] GetWorkspacesListDTO getWorkspacesListDTO, CancellationToken cancellationToken)
         {
-            var workspaces = await _workspaceService.GetAllWorkspacesAsync(cancellationToken);
+            var workspaces = await _workspaceService.GetAllWorkspacesAsync(getWorkspacesListDTO, cancellationToken);
             return Ok(workspaces); 
         }
 

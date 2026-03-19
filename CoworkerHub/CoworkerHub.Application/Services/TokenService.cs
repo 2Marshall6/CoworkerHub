@@ -1,4 +1,4 @@
-﻿using CoworkerHub.Application.DTOs;
+﻿using CoworkerHub.Application.DTOs.Authentication;
 using CoworkerHub.Application.Exceptions;
 using CoworkerHub.Application.Interfaces;
 using CoworkerHub.Domain.Entities;
@@ -13,11 +13,11 @@ namespace CoworkerHub.Application.Services
 {
     public class TokenService : ITokenService
     {
-        private readonly TokenOptions _JwtOptions;
+        private readonly TokenOptions _TokenOptions;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
-        public TokenService(IOptions<TokenOptions> jwtOptions, IRefreshTokenRepository refreshTokenRepository)
+        public TokenService(IOptions<TokenOptions> tokenOptions, IRefreshTokenRepository refreshTokenRepository)
         {
-            _JwtOptions = jwtOptions.Value;
+            _TokenOptions = tokenOptions.Value;
             _refreshTokenRepository = refreshTokenRepository;
         }
 
@@ -32,11 +32,11 @@ namespace CoworkerHub.Application.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(_JwtOptions.TokenLifetimeInMinutes),
-                Issuer = _JwtOptions.Issuer,
-                Audience = _JwtOptions.Audience,
+                Expires = DateTime.UtcNow.AddMinutes(_TokenOptions.TokenLifetimeInMinutes),
+                Issuer = _TokenOptions.Issuer,
+                Audience = _TokenOptions.Audience,
                 SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_JwtOptions.Key!)),
+                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_TokenOptions.Key!)),
                     SecurityAlgorithms.HmacSha512Signature
                 )
             };
@@ -48,14 +48,14 @@ namespace CoworkerHub.Application.Services
             {
                 UserName = userName,
                 AccessToken = tokenHandler.WriteToken(token),
-                ExpiresIn = _JwtOptions.TokenLifetimeInMinutes * 60, 
+                ExpiresIn = _TokenOptions.TokenLifetimeInMinutes * 60, 
                 RefreshToken = await GenerateRefreshToken(userId)
             };
         }
 
         public async Task<string> GenerateRefreshToken(Guid userId)
         {
-            var refreshTokenValidDays = _JwtOptions.RefreshTokenLifetimeInDays;
+            var refreshTokenValidDays = _TokenOptions.RefreshTokenLifetimeInDays;
             var refreshToken = new RefreshToken
             {
                 UserId = userId,

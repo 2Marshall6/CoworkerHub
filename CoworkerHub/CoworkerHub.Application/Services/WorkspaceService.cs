@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CoworkerHub.Application.DTOs;
+using CoworkerHub.Application.DTOs.Workspace;
 using CoworkerHub.Application.Exceptions;
 using CoworkerHub.Application.Interfaces;
 using CoworkerHub.Domain.Entities;
@@ -38,11 +38,11 @@ namespace CoworkerHub.Application.Services
             }
         }
 
-        public async Task<List<WorkspaceDTO>> GetAllWorkspacesAsync(CancellationToken cancellationToken)
+        public async Task<PageModel<WorkspaceDTO>> GetAllWorkspacesAsync(GetWorkspacesListDTO getWorkspacesListDTO, CancellationToken cancellationToken)
         {
-            var workspaces = await _workspaceRepository.GetAllWorkspacesAsync(cancellationToken);
+            var workspacesPage = await _workspaceRepository.GetAllWorkspacesAsync(getWorkspacesListDTO, cancellationToken);
 
-            return _mapper.Map<List<WorkspaceDTO>>(workspaces);
+            return _mapper.Map<PageModel<WorkspaceDTO>>(workspacesPage);
         }
 
         public async Task<WorkspaceDTO?> GetWorkspaceByIdAsync(int getId, CancellationToken cancellationToken)

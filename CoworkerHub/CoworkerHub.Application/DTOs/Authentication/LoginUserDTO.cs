@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoworkerHub.Application.DTOs
+namespace CoworkerHub.Application.DTOs.Authentication
 {
-    public class UserDTO
+    public class LoginUserDTO
     {
-        public Guid Id { get; set; }
-        public string UserName { get; set; }
         public string Email { get; set; }
+        public string Password { get; set; }
     }
 }

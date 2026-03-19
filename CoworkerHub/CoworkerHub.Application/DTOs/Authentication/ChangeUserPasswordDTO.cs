@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoworkerHub.Application.DTOs
+namespace CoworkerHub.Application.DTOs.Authentication
 {
     public class ChangeUserPasswordDTO
     {
