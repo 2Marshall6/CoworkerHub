@@ -22,6 +22,7 @@ namespace CoworkerHub.Infrastructure.Persistens
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IWorkspaceRepository, WorkspaceRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IDeskRepository, DeskRepository>();
 
             services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();

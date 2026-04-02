@@ -2,7 +2,7 @@
 using CoworkerHub.Application.Options;
 using CoworkerHub.Domain.Entities;
 
-namespace CoworkerHub.Application.Interfaces
+namespace CoworkerHub.Application.Interfaces 
 {
     public interface IWorkspaceService
     {

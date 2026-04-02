@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CoworkerHub.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,12 +31,12 @@ namespace CoworkerHub.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    UserName = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    Email = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     NormalizedEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
-                    PasswordHash = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: false),
                     SecurityStamp = table.Column<string>(type: "text", nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "text", nullable: true),
                     PhoneNumber = table.Column<string>(type: "text", nullable: true),
@@ -193,7 +193,10 @@ namespace CoworkerHub.Infrastructure.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    IsAvailable = table.Column<bool>(type: "boolean", nullable: false),
+                    Floor = table.Column<int>(type: "integer", nullable: false),
+                    Capacity = table.Column<int>(type: "integer", nullable: false),
+                    PricePerHour = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
                     WorkspaceId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -203,6 +206,36 @@ namespace CoworkerHub.Infrastructure.Migrations
                         name: "FK_Desks_Workspaces_WorkspaceId",
                         column: x => x.WorkspaceId,
                         principalTable: "Workspaces",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Bookings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    StartTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    EndTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
+                    DeskId = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bookings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Bookings_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Bookings_Desks_DeskId",
+                        column: x => x.DeskId,
+                        principalTable: "Desks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -251,15 +284,19 @@ namespace CoworkerHub.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Bookings_DeskId",
+                table: "Bookings",
+                column: "DeskId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bookings_UserId",
+                table: "Bookings",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Desks_WorkspaceId",
                 table: "Desks",
                 column: "WorkspaceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Workspaces_Name",
-                table: "Workspaces",
-                column: "Name",
-                unique: true);
         }
 
         /// <inheritdoc />
@@ -281,7 +318,7 @@ namespace CoworkerHub.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Desks");
+                name: "Bookings");
 
             migrationBuilder.DropTable(
                 name: "RefreshTokens");
@@ -291,6 +328,9 @@ namespace CoworkerHub.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Desks");
 
             migrationBuilder.DropTable(
                 name: "Workspaces");

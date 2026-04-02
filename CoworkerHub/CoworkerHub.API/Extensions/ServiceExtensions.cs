@@ -21,6 +21,7 @@ namespace CoworkerHub.API.Extensions
             services.AddAutoMapper(typeof(AppMappingProfile));
             services.AddEndpointsApiExplorer();
             services.SwaggerExtensions(configuration);
+            services.AddScoped<IDeskService, DeskService>();
         }
     }
 }

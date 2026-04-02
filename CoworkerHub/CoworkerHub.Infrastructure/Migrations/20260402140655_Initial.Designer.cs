@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CoworkerHub.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260402131505_AddBookingEntity")]
-    partial class AddBookingEntity
+    [Migration("20260402140655_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,8 +42,12 @@ namespace CoworkerHub.Infrastructure.Migrations
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<decimal>("TotalPrice")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
@@ -76,10 +80,11 @@ namespace CoworkerHub.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<decimal>("PricePerHour")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("WorkspaceId")
                         .HasColumnType("integer");
@@ -121,9 +126,6 @@ namespace CoworkerHub.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("BookingId")
                         .HasColumnType("integer");
 
                     b.Property<string>("ConcurrencyStamp")

@@ -8,7 +8,6 @@
         {
             services.AddSwaggerGen(options =>
             {
-                // Добавляем описание того, как передавать токен
                 options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
                 {
                     Name = "Authorization",
@@ -18,8 +17,6 @@
                     In = Microsoft.OpenApi.Models.ParameterLocation.Header,
                     Description = "Введите валидный JWT токен."
                 });
-
-                // Указываем, что все эндпоинты по умолчанию используют эту схему
                 options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
                 {
                     {

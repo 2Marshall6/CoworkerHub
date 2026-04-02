@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CoworkerHub.Application.DTOs.Authentication;
+using CoworkerHub.Application.DTOs.Desk;
 using CoworkerHub.Application.DTOs.Workspace;
 using CoworkerHub.Application.Options;
 using CoworkerHub.Domain.Entities;
@@ -15,6 +16,10 @@ namespace CoworkerHub.Application.MappingProfiles
             CreateMap<User, UserDTO>();
             CreateMap<RegisterUserDTO, User>();
             CreateMap<PageModel<Workspace>, PageModel<WorkspaceDTO>>();
+
+            CreateMap<Desk, DeskDTO>();
+            CreateMap<CreateDeskDTO, Desk>();
+            CreateMap<UpdateDeskDTO, Desk>();
         }
             
     }

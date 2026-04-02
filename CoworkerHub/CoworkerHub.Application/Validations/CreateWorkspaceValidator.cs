@@ -11,4 +11,13 @@ namespace CoworkerHub.Application.Validations
             RuleFor(workspace => workspace.Description).MinimumLength(3);
         }
     }
+
+    public class GetWorkspacesListValidator : AbstractValidator<GetWorkspacesListDTO>
+    {
+        public GetWorkspacesListValidator()
+        {
+            RuleFor(dto => dto.PageNumber).GreaterThan(0);
+            RuleFor(dto => dto.PageSize).GreaterThan(0).LessThan(1000);
+        }
+    }
 }
