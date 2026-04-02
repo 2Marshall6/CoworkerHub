@@ -1,11 +1,7 @@
 ﻿using CoworkerHub.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace CoworkerHub.Infrastructure.Configurations
 {
@@ -18,6 +14,11 @@ namespace CoworkerHub.Infrastructure.Configurations
             builder.HasIndex(u => u.Email).IsUnique();
             builder.Property(u => u.UserName).IsRequired().HasMaxLength(200);
             builder.Property(u => u.PasswordHash).IsRequired();
+
+            builder.HasMany(u => u.Bookings)
+                .WithOne(b => b.User)
+                .HasForeignKey(b => b.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
