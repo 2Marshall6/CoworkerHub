@@ -46,12 +46,6 @@ namespace CoworkerHub.Application.Services
             return _mapper.Map<DeskDTO>(desk);
         }
 
-        public async Task<List<DeskDTO>> GetDesksByWorkspaceIdAsync(int workspaceId, CancellationToken cancellationToken)
-        {
-            var desks = await _deskRepository.GetDesksByWorkspaceIdAsync(workspaceId, cancellationToken);
-            return _mapper.Map<List<DeskDTO>>(desks);
-        }
-
         public async Task UpdateDeskAsync(int id, UpdateDeskDTO updateModel, CancellationToken cancellationToken)
         {
             var desk = await _deskRepository.GetDeskByIdAsync(id, cancellationToken);

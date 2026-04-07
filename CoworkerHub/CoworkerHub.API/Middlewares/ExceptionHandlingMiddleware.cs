@@ -1,6 +1,5 @@
 ﻿using CoworkerHub.API.Models;
 using CoworkerHub.Application.Exceptions;
-using Microsoft.AspNetCore.Http;
 using System.Net;
 
 namespace CoworkerHub.API.Middlewares

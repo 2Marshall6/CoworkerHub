@@ -24,7 +24,7 @@ namespace CoworkerHub.Application.Services
         {
             Workspace workspace = _mapper.Map<Workspace>(createModel);
 
-            await _workspaceRepository.CreateWorkspaceAsync(workspace, cancellationToken);
+            _workspaceRepository.CreateWorkspace(workspace);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return _mapper.Map<WorkspaceDTO>(workspace);
@@ -32,11 +32,16 @@ namespace CoworkerHub.Application.Services
 
         public async Task DeleteWorkspaceAsync(int deleteId, CancellationToken cancellationToken)
         {
-            var deletedrows = await _workspaceRepository.DeleteWorkspaceAsync(deleteId, cancellationToken);
-            if (deletedrows == 0)
+            var workspace = await _workspaceRepository.GetWorkspaceByIdAsync(deleteId, cancellationToken);
+
+            if (workspace == null)
             {
                 throw new NotFoundException($"Workspace with id {deleteId} not found.");
             }
+
+            _workspaceRepository.DeleteWorkspace(workspace);
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
 
         public async Task<PageModel<WorkspaceDTO>> GetAllWorkspacesAsync(GetWorkspacesListDTO getWorkspacesListDTO, CancellationToken cancellationToken)
@@ -46,14 +51,14 @@ namespace CoworkerHub.Application.Services
             return _mapper.Map<PageModel<WorkspaceDTO>>(workspacesPage);
         }
 
-        public async Task<WorkspaceDTO?> GetWorkspaceByIdAsync(int getId, CancellationToken cancellationToken)
+        public async Task<WorkspaceDetailsDTO?> GetWorkspaceByIdAsync(int getId, CancellationToken cancellationToken)
         {
             var workspace = await _workspaceRepository.GetWorkspaceByIdAsync(getId, cancellationToken);
             if (workspace == null)
                 throw new NotFoundException($"Workspace with id {getId} not found.");
             
 
-            return _mapper.Map<WorkspaceDTO>(workspace);
+            return _mapper.Map<WorkspaceDetailsDTO>(workspace);
         }
     }
 }

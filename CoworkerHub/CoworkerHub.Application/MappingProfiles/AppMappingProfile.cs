@@ -11,6 +11,10 @@ namespace CoworkerHub.Application.MappingProfiles
     {
         public AppMappingProfile()
         {
+            CreateMap<Workspace, WorkspaceDetailsDTO>()
+                .ForMember(
+                    dest => dest.Desks,
+                    opt => opt.MapFrom(src => src.Desks)); ;
             CreateMap<Workspace, WorkspaceDTO>();
             CreateMap<CreateWorkspaceDTO, Workspace>();
             CreateMap<User, UserDTO>();
@@ -20,7 +24,15 @@ namespace CoworkerHub.Application.MappingProfiles
             CreateMap<Desk, DeskDTO>();
             CreateMap<CreateDeskDTO, Desk>();
             CreateMap<UpdateDeskDTO, Desk>();
+
+            CreateMap<Booking, TimeSlotDTO>()
+                .ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTime))
+                .ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => src.EndTime));
+
+            CreateMap<Desk, DeskDTO>()
+                .ForMember(
+                    dest => dest.OccupiedTimeSlots,
+                    opt => opt.MapFrom(src => src.Booking));
         }
-            
     }
 }

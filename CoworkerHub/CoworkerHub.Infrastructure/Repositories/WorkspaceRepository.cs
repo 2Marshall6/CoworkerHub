@@ -2,6 +2,7 @@
 using CoworkerHub.Application.Interfaces;
 using CoworkerHub.Application.Options;
 using CoworkerHub.Domain.Entities;
+using CoworkerHub.Domain.Enums;
 using CoworkerHub.Infrastructure.Persistens;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,17 +16,15 @@ namespace CoworkerHub.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task CreateWorkspaceAsync(Workspace createModel, CancellationToken cancellationToken)
+        public void CreateWorkspace(Workspace createModel)
         {
-            await _context.Workspaces
-                .AddAsync(createModel, cancellationToken);
+            _context.Workspaces
+                .Add(createModel);
         }
 
-        public async Task<int> DeleteWorkspaceAsync(int workspaceId, CancellationToken cancellationToken)
+        public void DeleteWorkspace(Workspace workspace)
         {
-            return await _context.Workspaces
-                .Where(w => w.Id == workspaceId)
-                .ExecuteDeleteAsync(cancellationToken);
+            _context.Workspaces.Remove(workspace);
         }
 
         public async Task<PageModel<Workspace>> GetAllWorkspacesAsync(int pageNumber, int pageSize, CancellationToken cancellationToken)
@@ -54,12 +53,11 @@ namespace CoworkerHub.Infrastructure.Repositories
 
         public async Task<Workspace?> GetWorkspaceByIdAsync(int id, CancellationToken cancellationToken)
         {
-            var workspace = await _context.Workspaces
-                                    .AsNoTracking()
-                                    .FirstOrDefaultAsync(w => w.Id == id, cancellationToken);
-
-
-            return workspace;
+            return await _context.Workspaces
+                .AsNoTracking()
+                .Include(w => w.Desks.Where(d => d.Status == DeskStatus.Available))
+                    .ThenInclude(d => d.Booking.Where(b => b.Status != BookingStatus.Completed))
+                .FirstOrDefaultAsync(w => w.Id == id, cancellationToken);
         }
     }
 }

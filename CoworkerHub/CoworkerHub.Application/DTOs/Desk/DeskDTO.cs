@@ -11,5 +11,7 @@ namespace CoworkerHub.Application.DTOs.Desk
         public decimal PricePerHour { get; set; }
         public DeskStatus Status { get; set; }
         public int WorkspaceId { get; set; }
+
+        public List<TimeSlotDTO> OccupiedTimeSlots { get; set; }
     }
 }

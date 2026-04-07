@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using CoworkerHub.Application.Exceptions;
 using CoworkerHub.Application.DTOs.Workspace;
-using CoworkerHub.Domain.Entities;
 using CoworkerHub.Application.Options;
 using CoworkerHub.Application.Interfaces;
 
@@ -11,7 +10,7 @@ namespace CoworkerHub.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class WorkspacesController : ControllerBase
     {
         private readonly IWorkspaceService _workspaceService;

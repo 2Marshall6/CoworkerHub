@@ -10,7 +10,7 @@ namespace CoworkerHub.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    // [Authorize(Roles = "Admin, Manager")] // Подключишь, когда настроим роли
+    //[Authorize]
     public class DesksController : ControllerBase
     {
         private readonly IDeskService _deskService;
@@ -22,15 +22,6 @@ namespace CoworkerHub.API.Controllers
             _deskService = deskService;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
-        }
-
-        // GET api/workspaces/{workspaceId}/desks 
-        // Обрати внимание: этот метод логичнее смотрелся бы в WorkspacesController, но можно оставить и тут, изменив роут.
-        [HttpGet("~/api/workspaces/{workspaceId}/desks")]
-        public async Task<ActionResult<List<DeskDTO>>> GetByWorkspace(int workspaceId, CancellationToken cancellationToken)
-        {
-            var desks = await _deskService.GetDesksByWorkspaceIdAsync(workspaceId, cancellationToken);
-            return Ok(desks);
         }
 
         [HttpGet("{id}")]
