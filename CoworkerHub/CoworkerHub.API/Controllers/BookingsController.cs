@@ -30,12 +30,8 @@ namespace CoworkerHub.API.Controllers
             {
                 throw new AppValidationException(string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage)));
             }
-
-            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out Guid userId))
-            {
-                throw new UnauthorizedException("Invalid user token.");
-            }
+             
+            var userId = await FindUserIdAsync();
 
             var booking = await _bookingService.CreateBookingAsync(userId, createModel, cancellationToken);
 
@@ -45,15 +41,21 @@ namespace CoworkerHub.API.Controllers
         [HttpGet("my")]
         public async Task<ActionResult<List<BookingDTO>>> GetMyBookings(CancellationToken cancellationToken)
         {
+            var userId = await FindUserIdAsync();
+
+            var bookings = await _bookingService.GetMyBookingsAsync(userId, cancellationToken);
+
+            return Ok(bookings);
+        }
+
+        private async Task<Guid> FindUserIdAsync()
+        {
             var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out Guid userId))
             {
                 throw new UnauthorizedException("Invalid user token.");
             }
-
-            var bookings = await _bookingService.GetMyBookingsAsync(userId, cancellationToken);
-
-            return Ok(bookings);
+            return userId;
         }
     }
 }

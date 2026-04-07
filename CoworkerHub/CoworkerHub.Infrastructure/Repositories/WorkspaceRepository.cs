@@ -56,7 +56,7 @@ namespace CoworkerHub.Infrastructure.Repositories
             return await _context.Workspaces
                 .AsNoTracking()
                 .Include(w => w.Desks.Where(d => d.Status == DeskStatus.Available))
-                    .ThenInclude(d => d.Booking.Where(b => b.Status != BookingStatus.Completed))
+                    .ThenInclude(d => d.Booking.Where(b => b.Status != BookingStatus.Completed && b.Status != BookingStatus.Cancelled))
                 .FirstOrDefaultAsync(w => w.Id == id, cancellationToken);
         }
     }
