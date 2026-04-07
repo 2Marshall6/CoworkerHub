@@ -22,6 +22,7 @@ namespace CoworkerHub.API.Extensions
             services.AddEndpointsApiExplorer();
             services.SwaggerExtensions(configuration);
             services.AddScoped<IDeskService, DeskService>();
+            services.AddScoped<IBookingService, BookingService>();
         }
     }
 }

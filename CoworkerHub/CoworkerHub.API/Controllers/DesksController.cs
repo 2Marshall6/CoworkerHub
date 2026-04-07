@@ -10,7 +10,7 @@ namespace CoworkerHub.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class DesksController : ControllerBase
     {
         private readonly IDeskService _deskService;

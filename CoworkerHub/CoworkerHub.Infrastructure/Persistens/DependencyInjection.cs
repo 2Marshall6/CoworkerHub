@@ -23,6 +23,7 @@ namespace CoworkerHub.Infrastructure.Persistens
             services.AddScoped<IWorkspaceRepository, WorkspaceRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IDeskRepository, DeskRepository>();
+            services.AddScoped<IBookingRepository, BookingRepository>();
 
             services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();

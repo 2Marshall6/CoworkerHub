@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CoworkerHub.Application.DTOs.Authentication;
+using CoworkerHub.Application.DTOs.Booking;
 using CoworkerHub.Application.DTOs.Desk;
 using CoworkerHub.Application.DTOs.Workspace;
 using CoworkerHub.Application.Options;
@@ -33,6 +34,8 @@ namespace CoworkerHub.Application.MappingProfiles
                 .ForMember(
                     dest => dest.OccupiedTimeSlots,
                     opt => opt.MapFrom(src => src.Booking));
+
+            CreateMap<Booking, BookingDTO>();
         }
     }
 }

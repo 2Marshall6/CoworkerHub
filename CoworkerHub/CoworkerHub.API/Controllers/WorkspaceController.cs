@@ -10,7 +10,7 @@ namespace CoworkerHub.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class WorkspacesController : ControllerBase
     {
         private readonly IWorkspaceService _workspaceService;
