@@ -1,5 +1,6 @@
 ﻿using CoworkerHub.Application.Interfaces;
 using CoworkerHub.Domain.Entities;
+using CoworkerHub.Domain.Enums;
 using CoworkerHub.Infrastructure.Persistens;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,6 +28,7 @@ namespace CoworkerHub.Infrastructure.Repositories
         public async Task<Desk?> GetDeskByIdAsync(int id, CancellationToken cancellationToken)
         {
             return await _context.Desks
+                .Include(d => d.Booking.Where(b => b.Status != BookingStatus.Completed && b.Status != BookingStatus.Cancelled))
                 .FirstOrDefaultAsync(d => d.Id == id, cancellationToken);
         }
 

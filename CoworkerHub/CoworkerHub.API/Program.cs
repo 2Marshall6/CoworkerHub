@@ -1,5 +1,6 @@
-using CoworkerHub.API.Middlewares;
 using CoworkerHub.API.Extensions;
+using CoworkerHub.API.Middlewares;
+using CoworkerHub.Infrastructure.Persistens;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,4 +22,5 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 app.MapGet("/", () => Results.Redirect("/swagger")).ExcludeFromDescription();
 
+await app.Services.InitializeInfrastructureAsync();
 app.Run();

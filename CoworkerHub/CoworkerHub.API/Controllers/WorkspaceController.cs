@@ -1,10 +1,11 @@
-﻿using FluentValidation;
+﻿using CoworkerHub.Application.DTOs.Workspace;
+using CoworkerHub.Application.Exceptions;
+using CoworkerHub.Application.Interfaces;
+using CoworkerHub.Application.Options;
+using CoworkerHub.Domain.Enums;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using CoworkerHub.Application.Exceptions;
-using CoworkerHub.Application.DTOs.Workspace;
-using CoworkerHub.Application.Options;
-using CoworkerHub.Application.Interfaces;
 
 namespace CoworkerHub.API.Controllers
 {
@@ -38,6 +39,7 @@ namespace CoworkerHub.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = AppRoles.Admin + "," + AppRoles.Manager)]
         public async Task<ActionResult> Create(CreateWorkspaceDTO createModel, CancellationToken cancellationToken)
         {
             var validationResult = await _validator.ValidateAsync(createModel, cancellationToken);
@@ -53,6 +55,7 @@ namespace CoworkerHub.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = AppRoles.Admin)]
         public async Task<ActionResult> Delete(int id, CancellationToken cancellationToken)
         {
             await _workspaceService.DeleteWorkspaceAsync(id, cancellationToken);

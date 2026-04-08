@@ -22,13 +22,18 @@ namespace CoworkerHub.Application.Services
             _refreshTokenRepository = refreshTokenRepository;
         }
 
-        public async Task<AuthenticationDTO> GenerateJwt(Guid userId, string userName)
+        public async Task<AuthenticationDTO> GenerateJwt(Guid userId, string userName, IList<string> roles)
         {
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
                 new Claim(JwtRegisteredClaimNames.Name, userName)
             };
+
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

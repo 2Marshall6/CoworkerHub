@@ -8,5 +8,6 @@ namespace CoworkerHub.Application.Interfaces
         Task<AuthenticationDTO> LoginUserAsync(LoginUserDTO loginModel);
         Task ChangePasswordAsync(ChangeUserPasswordDTO changeUserPasswordDTO, CancellationToken cancellationToken);
         Task<AuthenticationDTO> RefreshTokensAsync(string oldRefreshToken);
+        Task AssignRoleAsync(AssignRoleDTO model, CancellationToken cancellationToken);
     }
 }

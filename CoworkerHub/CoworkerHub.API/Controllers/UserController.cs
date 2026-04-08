@@ -1,6 +1,7 @@
 ﻿using CoworkerHub.Application.DTOs.Authentication;
 using CoworkerHub.Application.Exceptions;
 using CoworkerHub.Application.Interfaces;
+using CoworkerHub.Domain.Enums;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -82,6 +83,14 @@ namespace CoworkerHub.API.Controllers
             });
 
             return Ok(result);
+        }
+
+        [HttpPost("assign-role")]
+        [Authorize(Roles = AppRoles.Admin)] 
+        public async Task<ActionResult> AssignRole(AssignRoleDTO model, CancellationToken cancellationToken)
+        {
+            await _userService.AssignRoleAsync(model, cancellationToken);
+            return Ok();
         }
     }
 }

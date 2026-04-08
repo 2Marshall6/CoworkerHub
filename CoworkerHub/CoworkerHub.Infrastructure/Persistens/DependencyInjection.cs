@@ -26,6 +26,7 @@ namespace CoworkerHub.Infrastructure.Persistens
             services.AddScoped<IBookingRepository, BookingRepository>();
 
             services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.Configure<IdentityOptions>(options =>
@@ -70,6 +71,12 @@ namespace CoworkerHub.Infrastructure.Persistens
             services.Configure<Application.Options.TokenOptions>(configuration.GetSection(nameof(Application.Options.TokenOptions)));
 
             return services;
+        }
+
+        public static async Task InitializeInfrastructureAsync(this IServiceProvider serviceProvider)
+        {
+            using var scope = serviceProvider.CreateScope();
+            await RoleSeeder.SeedRolesAndAdminAsync(scope.ServiceProvider);
         }
     }
 }
