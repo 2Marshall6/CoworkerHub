@@ -32,7 +32,7 @@ namespace CoworkerHub.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = AppRoles.Admin + "," + AppRoles.Manager)]
+        [Authorize(Roles = $"{AppRoles.Admin},{AppRoles.Manager}")]
         public async Task<ActionResult<DeskDTO>> Create(CreateDeskDTO createModel, CancellationToken cancellationToken)
         {
             var validationResult = await _createValidator.ValidateAsync(createModel, cancellationToken);
@@ -60,7 +60,7 @@ namespace CoworkerHub.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = AppRoles.Admin + "," + AppRoles.Manager)]
+        [Authorize(Roles = $"{AppRoles.Admin},{AppRoles.Manager}")]
         public async Task<ActionResult> Delete(int id, CancellationToken cancellationToken)
         {
             await _deskService.DeleteDeskAsync(id, cancellationToken);
@@ -68,7 +68,7 @@ namespace CoworkerHub.API.Controllers
         }
 
         [HttpPatch("{id}/status")]
-        [Authorize(Roles = AppRoles.Admin + "," + AppRoles.Manager)]
+        [Authorize(Roles = $"{AppRoles.Admin},{AppRoles.Manager}")]
         public async Task<ActionResult> ChangeStatus(int id, [FromBody] DeskStatus newStatus, CancellationToken cancellationToken)
         {
             await _deskService.ChangeDeskStatusAsync(id, newStatus, cancellationToken);

@@ -39,7 +39,7 @@ namespace CoworkerHub.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = AppRoles.Admin + "," + AppRoles.Manager)]
+        [Authorize(Roles = $"{AppRoles.Admin},{AppRoles.Manager}")]
         public async Task<ActionResult> Create(CreateWorkspaceDTO createModel, CancellationToken cancellationToken)
         {
             var validationResult = await _validator.ValidateAsync(createModel, cancellationToken);

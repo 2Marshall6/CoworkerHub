@@ -23,6 +23,18 @@ namespace CoworkerHub.API.Extensions
             services.SwaggerExtensions(configuration);
             services.AddScoped<IDeskService, DeskService>();
             services.AddScoped<IBookingService, BookingService>();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowClient", builder =>
+                {
+                    builder.WithOrigins("http://localhost:5173/")
+                           .AllowAnyMethod()
+                           .AllowAnyHeader()
+                           .AllowCredentials();
+                });
+            });
+
         }
     }
 }
