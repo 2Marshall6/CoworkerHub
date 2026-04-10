@@ -1,0 +1,24 @@
+services:
+  coworkerhub.api:
+    image: ${DOCKER_REGISTRY-}coworkerhubapi
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=products.database;Port=5432;Database=products;Username=postgres;Password=password
+    build:
+      context: .
+      dockerfile: CoworkerHub.API/Dockerfile
+    ports:
+       - "8000:8000"
+       - "8001:8001"
+
+  products.database:
+    image: postgres:16
+    container_name: products.database
+    environment:
+      - POSTGRES_DB=products
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - ./.containers/product-db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
